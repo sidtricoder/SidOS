@@ -3,6 +3,7 @@
 
 #include "types.h"
 #include "gdt.h" // Include the Global Descriptor Table header
+#include "port.h"
 
 class InterruptManager 
 {
@@ -34,13 +35,18 @@ protected:
     ); // Method to set an entry in the interrupt descriptor table
 
 
+    Port8BitSlow picMasterCommand; // Port for the master PIC command
+    Port8BitSlow picMasterData; // Port for the master PIC data
+    Port8BitSlow picSlaveCommand; // Port for the slave PIC command
+    Port8BitSlow picSlaveData; // Port for the slave PIC data
+
 public:
     // Method to handle an interrupt
     InterruptManager(GlobalDescriptorTable* gdt);
     ~InterruptManager();
 
     void Activate(); // Method to activate the interrupt manager
-    
+
     static uint32_t handleInterrupt(uint8_t interruptNumber, uint32_t esp); // Code to handle the specified interrupt
 
     static void IgnoreInterruptRequest();
