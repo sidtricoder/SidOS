@@ -1,5 +1,6 @@
 #include "types.h"
 #include "gdt.h"
+#include "interrupts.h"
 
 void printf(char *str)
 {
@@ -21,5 +22,7 @@ extern "C" void kernelMain(void *multiboot_structure, uint32_t magicnumber)
 {   
     printf("Hello! Welcome to SidOS");
     GlobalDescriptorTable gdt;
+    InterruptManager interruptManager(&gdt);
+    interruptManager.Activate(); // Enable interrupts
     while(1);
 }
